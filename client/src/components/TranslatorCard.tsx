@@ -74,39 +74,41 @@ export default function TranslatorCard() {
   };
   
   return (
-    <Card className="rounded-xl shadow-lg overflow-hidden border border-gray-200">
-      {/* Language Selection Section */}
-      <div className="p-6 bg-gray-50 border-b border-gray-200">
+    <Card className="mobile-card">
+      {/* Language Selection Section - Mobile-friendly */}
+      <div className="p-4 sm:p-6 bg-gray-50 border-b border-gray-200">
         <LanguageSelector />
       </div>
       
-      {/* Translation Areas */}
+      {/* Translation Areas - Stack on mobile, side-by-side on desktop */}
       <div className="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-gray-200">
         <SourceTextInput />
         <TranslatedOutput />
       </div>
       
-      {/* Translation Actions */}
-      <div className="p-4 bg-gray-50 border-t border-gray-200 flex justify-between items-center">
-        <div>
+      {/* Translation Actions - Mobile-optimized layout */}
+      <div className="p-4 bg-gray-50 border-t border-gray-200 flex flex-col sm:flex-row justify-between items-center gap-3">
+        <div className="w-full sm:w-auto">
           {/* Show detected language if available */}
           {detectedLanguage && (
-            <div className="text-sm text-gray-600">
+            <div className="text-sm text-gray-600 text-center sm:text-left mb-2 sm:mb-0">
               <span>Detected language: <span className="font-medium">{detectedLanguage}</span></span>
             </div>
           )}
         </div>
-        <div className="flex space-x-3">
+        <div className="flex w-full sm:w-auto space-x-3">
           <Button
             variant="outline"
             onClick={handleCancelTranslation}
             disabled={!isTranslating}
+            className="flex-1 sm:flex-none"
           >
             Cancel
           </Button>
           <Button 
             onClick={handleTranslate}
             disabled={isTranslating || !sourceText.trim()}
+            className="flex-1 sm:flex-none"
           >
             Translate
           </Button>

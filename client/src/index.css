@@ -8,6 +8,23 @@
   }
 
   body {
-    @apply font-sans antialiased bg-background text-foreground;
+    @apply font-sans antialiased bg-background text-foreground min-h-screen overflow-x-hidden;
+  }
+
+  /* Add viewport meta tag for mobile responsiveness */
+  html {
+    @apply touch-manipulation text-base;
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+/* Mobile-specific styles */
+@layer components {
+  .mobile-card {
+    @apply rounded-xl shadow-md overflow-hidden border border-gray-200 w-full max-w-full mx-auto;
+  }
+  
+  .mobile-button {
+    @apply w-full flex justify-center items-center py-3 rounded-lg transition-all;
   }
 }

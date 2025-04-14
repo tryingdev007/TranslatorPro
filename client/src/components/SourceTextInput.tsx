@@ -46,17 +46,18 @@ export default function SourceTextInput() {
   };
   
   return (
-    <div className="p-4 flex flex-col h-full">
+    <div className="p-3 sm:p-4 flex flex-col h-full">
       <div className="flex justify-between items-center mb-2">
         <h3 className="text-sm font-medium text-gray-700">Original Text</h3>
-        <div className="flex space-x-2">
+        <div className="flex space-x-1 sm:space-x-2">
           <Button 
             type="button"
             variant="ghost"
             size="icon"
-            className="h-8 w-8 p-1.5 rounded-md text-gray-500 hover:text-gray-700 hover:bg-gray-100"
+            className="h-8 w-8 p-1.5 rounded-md text-gray-500 hover:text-gray-700 hover:bg-gray-100 active:bg-gray-200 touch-manipulation"
             onClick={handleClearSource}
             disabled={!sourceText}
+            aria-label="Clear text"
           >
             <Trash2 className="h-4 w-4" />
             <span className="sr-only">Clear text</span>
@@ -68,21 +69,22 @@ export default function SourceTextInput() {
         value={sourceText}
         onChange={handleSourceTextChange}
         placeholder="Enter text to translate..."
-        className="flex-grow p-3 resize-none transition-colors min-h-[150px]"
+        className="flex-grow p-2 sm:p-3 resize-none transition-colors min-h-[120px] sm:min-h-[150px] text-base rounded-lg"
         rows={6}
       />
       
-      <div className="flex justify-between items-center mt-3 text-xs text-gray-500">
+      <div className="flex justify-between items-center mt-2 sm:mt-3 text-xs text-gray-500">
         <span>
-          Characters: {sourceText.length}/{MAX_CHARS}
+          {sourceText.length}/{MAX_CHARS}
         </span>
         <Button
           type="button"
           variant="ghost"
           size="icon"
-          className={`h-8 w-8 p-1.5 rounded-md ${isSpeaking ? 'text-primary' : 'text-gray-500'} hover:text-gray-700 hover:bg-gray-100`}
+          className={`h-8 w-8 p-1.5 rounded-md ${isSpeaking ? 'text-primary' : 'text-gray-500'} hover:text-gray-700 hover:bg-gray-100 active:bg-gray-200 touch-manipulation`}
           onClick={handleSpeakSource}
           disabled={!sourceText}
+          aria-label="Listen to text"
         >
           <Volume2 className="h-4 w-4" />
           <span className="sr-only">Listen</span>
