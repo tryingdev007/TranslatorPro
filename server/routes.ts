@@ -28,20 +28,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
         });
       }
       
-      // Call LibreTranslate API for translation
-      const apiUrl = "https://libretranslate.de/translate";
-      const response = await fetch(apiUrl, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          q: sourceText,
-          source: sourceLanguage,
-          target: targetLanguage,
-          format: "text",
-        }),
-      });
+      // Call MyMemory Translation API (free tier)
+      const apiUrl = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(sourceText)}&langpair=${sourceLanguage}|${targetLanguage}`;
+      const response = await fetch(apiUrl);
       
       if (!response.ok) {
         const errorText = await response.text();
@@ -49,20 +38,28 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(502).json({ message: "Translation service unavailable" });
       }
       
-      const data = await response.json() as { translatedText: string };
+      const data = await response.json();
+      
+      // Check if translation was successful
+      if (!data.responseData || !data.responseData.translatedText) {
+        console.error("Translation API error:", data);
+        return res.status(502).json({ message: "Translation service returned invalid data" });
+      }
+      
+      const translatedText = data.responseData.translatedText;
       
       // Save translation to history
       await storage.saveTranslation({
         sourceText,
-        translatedText: data.translatedText,
+        translatedText: translatedText,
         sourceLanguage,
         targetLanguage,
       });
       
       // Return the translation
       return res.json({
-        translatedText: data.translatedText,
-        detectedLanguage: null // LibreTranslate doesn't return detected language by default
+        translatedText: translatedText,
+        detectedLanguage: null // MyMemory doesn't return detected language by default
       });
     } catch (error) {
       console.error("Translation error:", error);
